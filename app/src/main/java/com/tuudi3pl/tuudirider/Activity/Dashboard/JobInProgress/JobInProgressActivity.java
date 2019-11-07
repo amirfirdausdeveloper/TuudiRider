@@ -197,13 +197,13 @@ public class JobInProgressActivity extends AppCompatActivity {
                                     button_accept2.setText("Pending Collection");
                                 }else if(parcel_status.equals("8")){
                                     button_accept.setText("Order has been collected");
-                                    button_accept2.setVisibility(View.GONE);
+                                    button_accept2.setText("Pending Collection");
                                 }else if(parcel_status.equals("9") || parcel_status.equals("3")){
                                     button_accept.setText("Order on the way for delivery");
                                     button_accept2.setText("Pending Delivery");
                                 }else if(parcel_status.equals("12")){
                                     button_accept.setText("Success Delivery");
-                                    button_accept2.setVisibility(View.GONE);
+                                    button_accept2.setText("Pending Delivery");
                                 }
 
                                 CN = obj.getString("CN");

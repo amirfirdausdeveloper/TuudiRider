@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class JobAcceptActivity extends AppCompatActivity {
 
-    String order_id,userid,which;
+    String order_id,userid,which,CN;
 
     ImageView imageView_back;
 
@@ -71,6 +71,7 @@ public class JobAcceptActivity extends AppCompatActivity {
         userid = user.get(PreferenceManagerLogin.USERID);
         which = getIntent().getStringExtra("which");
         order_id = getIntent().getStringExtra("order_id");
+        CN = getIntent().getStringExtra("CN");
 
         declare();
 
@@ -159,7 +160,7 @@ public class JobAcceptActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     @Override
@@ -239,6 +240,33 @@ public class JobAcceptActivity extends AppCompatActivity {
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
                 URL.URL_ACCEPT_JOB+userid+"&order_id="+order_id,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        updatestatusButton("10","","");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                standardProgressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36");
+                return super.getHeaders();
+            }
+        };
+        Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
+    }
+
+     private void updatestatusButton(String statusCode, String remarks, final String message){
+        JsonObjectRequest jsonReq = new JsonObjectRequest(
+                Request.Method.GET,
+                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status="+statusCode+"&remarks="+remarks+"&receiver_name=",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

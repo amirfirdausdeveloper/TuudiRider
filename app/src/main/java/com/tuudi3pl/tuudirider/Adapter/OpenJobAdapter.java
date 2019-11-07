@@ -71,6 +71,7 @@ public class OpenJobAdapter extends RecyclerView.Adapter<OpenJobAdapter.ProductV
             public void onClick(View v) {
                 Intent next = new Intent(mCtx, JobAcceptActivity.class);
                 next.putExtra("order_id",jobByMonthClass.getOrder_id());
+                next.putExtra("CN",jobByMonthClass.getCN());
                 next.putExtra("which",jobByMonthClass.getWhich_one());
                 mCtx.startActivity(next);
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
