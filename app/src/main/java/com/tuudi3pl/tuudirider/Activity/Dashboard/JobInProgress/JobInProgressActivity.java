@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.JobAccept.JobAcceptActivity;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.MainDashboard;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.Signature.SignatureActivity;
+import com.tuudi3pl.tuudirider.Activity.Dashboard.Tracking.TrackingActivity;
 import com.tuudi3pl.tuudirider.Connection.URL;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.PreferenceManagerLogin;
@@ -38,12 +39,12 @@ public class JobInProgressActivity extends AppCompatActivity {
 
     String order_id,userid,parcel_status,CN;
 
-    ImageView imageView_back;
+    ImageView imageView_back,imageView_track;
 
     TextView textView_title,textView_order_id,textView_date,textView_delivery_title,textView_delivery_type,textView_weight,
             textView_title2,textView_pickup_address,textView_pickup_email,textView_pickup_name,textView_pickup_phone,
             textView_title3,textView_delivery_address,textView_delivery_email,textView_delivery_name,textView_delivery_no,
-            textView_title5,textView_remarks;
+            textView_title5,textView_remarks,textView_cn_title,textView_cn,textView_company_pickup,textView_company_delivery;
 
     Button button_accept,button_accept2;
 
@@ -82,6 +83,15 @@ public class JobInProgressActivity extends AppCompatActivity {
             }
         });
 
+        imageView_track.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(getApplicationContext(), TrackingActivity.class);
+                next.putExtra("cn",CN);
+                startActivity(next);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
 
 
         button_accept.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +147,11 @@ public class JobInProgressActivity extends AppCompatActivity {
         textView_remarks = findViewById(R.id.textView_remarks);
         button_accept = findViewById(R.id.button_accept);
         button_accept2 = findViewById(R.id.button_accept2);
+        textView_cn_title = findViewById(R.id.textView_cn_title);
+        textView_cn = findViewById(R.id.textView_cn);
+        textView_company_pickup = findViewById(R.id.textView_company_pickup);
+        textView_company_delivery = findViewById(R.id.textView_company_delivery);
+        imageView_track = findViewById(R.id.imageView_track);
 
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_delivery_title,getApplicationContext());
@@ -156,6 +171,10 @@ public class JobInProgressActivity extends AppCompatActivity {
         TypeFaceClass.setTypeFaceTextView(textView_delivery_no,getApplicationContext());
         TypeFaceClass.setTypeFaceTextView(textView_title5,getApplicationContext());
         TypeFaceClass.setTypeFaceTextView(textView_remarks,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextViewBOLD(textView_cn_title,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_cn,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_company_pickup,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_company_delivery,getApplicationContext());
         TypeFaceClass.setTypeFaceButton(button_accept,getApplicationContext());
         TypeFaceClass.setTypeFaceButton(button_accept2,getApplicationContext());
     }
@@ -192,6 +211,8 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 JSONObject objectParace = new JSONObject(obj.getString("tracking_status"));
                                 parcel_status = objectParace.getString("status_id");
 
+                                textView_cn.setText(obj.getString("CN"));
+
                                 if (parcel_status.equals("10") || parcel_status.equals("13")) {
                                     button_accept.setText("On the way Collection");
                                     button_accept2.setText("Pending Collection");
@@ -207,7 +228,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 }
 
                                 CN = obj.getString("CN");
-                                textView_order_id.setText(order_id);
+                                textView_order_id.setText("TD"+order_id);
                                 textView_date.setText(obj.getString("date"));
                                 textView_delivery_type.setText(obj.getString("delivery_type"));
                                 textView_weight.setText(obj.getString("delivery_weight"));
@@ -223,6 +244,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 textView_pickup_email.setText(SENDER.getString("email"));
                                 textView_pickup_name.setText(SENDER.getString("fullname"));
                                 textView_pickup_phone.setText(SENDER.getString("phone"));
+                                textView_company_pickup.setText(SENDER.getString("company"));
 
                                 //DELIVERY INFORMATION
                                 JSONObject DELIVERY = new JSONObject(obj.getString("receiver_address"));
@@ -234,6 +256,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 textView_delivery_email.setText(DELIVERY.getString("email"));
                                 textView_delivery_name.setText(DELIVERY.getString("fullname"));
                                 textView_delivery_no.setText(DELIVERY.getString("phone"));
+                                textView_company_delivery.setText(DELIVERY.getString("company"));
 
                             }
                         } catch (JSONException e) {

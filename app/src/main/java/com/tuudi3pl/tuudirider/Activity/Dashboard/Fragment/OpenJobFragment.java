@@ -122,7 +122,8 @@ public class OpenJobFragment extends Fragment {
                                 if(arrLISTING.length() == 0){
                                     dialogNoJob();
                                 }else {
-                                    for (int i =0; i <arrLISTING.length(); i++){
+                                    for (int i =arrLISTING.length()-1; i >=0; i--){
+                                        Log.d("arr", String.valueOf(i));
                                         JSONObject objectListing = arrLISTING.getJSONObject(i);
 
                                         //SENDER ADDRESS

@@ -58,13 +58,7 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
         holder.textView_shipping_type.setText(jobByMonthClass.getShipping_type());
         holder.textView_delivery_type.setText(jobByMonthClass.getDelivery_type());
         holder.textView_delivery_weight.setText(jobByMonthClass.getDelivery_weight());
-        holder.textView_address.setText(jobByMonthClass.getSender_address()
-                +" "+jobByMonthClass.getSender_postcode()
-                +" "+jobByMonthClass.getSender_city()
-                +" "+jobByMonthClass.getSender_state()
-                +" "+jobByMonthClass.getSender_country()
-                + "\n"+"(Sender Address)");
-        holder.textView_remarks.setText(jobByMonthClass.getRemarks());
+        holder.textView_address.setText(jobByMonthClass.getCN());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +70,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
 
             }
         });
+
+        holder.textView_status_parcel.setText(jobByMonthClass.getStatus_description().toUpperCase());
     }
 
     @Override
@@ -86,7 +82,7 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
         TextView texView_date,textView_shipping_type,textView_words,textView_delivery_type,textView_delivery_weight,
-                textView_address,textView_words2,textView_remarks;
+                textView_address,textView_words2,textView_remarks,textView_words3,textView_status_parcel;
 
 
         public ProductViewHolder(View itemView) {
@@ -98,8 +94,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             textView_delivery_type  = itemView.findViewById(R.id.textView_delivery_type);
             textView_delivery_weight  = itemView.findViewById(R.id.textView_delivery_weight);
             textView_address  = itemView.findViewById(R.id.textView_address);
-            textView_words2  = itemView.findViewById(R.id.textView_words2);
-            textView_remarks  = itemView.findViewById(R.id.textView_remarks);
+            textView_words3  = itemView.findViewById(R.id.textView_words3);
+            textView_status_parcel  = itemView.findViewById(R.id.textView_status_parcel);
 
             TypeFaceClass.setTypeFaceTextViewBOLD(texView_date,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_shipping_type,mCtx);
@@ -107,8 +103,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             TypeFaceClass.setTypeFaceTextView(textView_delivery_type,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_delivery_weight,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_address,mCtx);
-            TypeFaceClass.setTypeFaceTextView(textView_words2,mCtx);
-            TypeFaceClass.setTypeFaceTextView(textView_remarks,mCtx);
+            TypeFaceClass.setTypeFaceTextView(textView_words3,mCtx);
+            TypeFaceClass.setTypeFaceTextViewBOLD(textView_status_parcel,mCtx);
 
         }
     }

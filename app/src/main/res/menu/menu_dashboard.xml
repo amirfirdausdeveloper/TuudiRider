@@ -6,15 +6,16 @@
         android:icon="@drawable/icon_dahsboard"
         android:title="Dashboard"/>
 
-    <item
-        android:id="@+id/myJob"
-        android:icon="@drawable/icon_my_job"
-        android:title="My Jobs"/>
 
     <item
         android:id="@+id/openJob"
         android:icon="@drawable/icon_cube"
         android:title="Open Jobs"/>
+
+    <item
+        android:id="@+id/myJob"
+        android:icon="@drawable/icon_my_job"
+        android:title="My Jobs"/>
 
     <item
         android:id="@+id/history"

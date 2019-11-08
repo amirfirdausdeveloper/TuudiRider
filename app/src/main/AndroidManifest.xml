@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeTuudi"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.Dashboard.Signature.sign"></activity>
+        <activity android:name=".Activity.ResetPassword.ResetPasswordActivity"></activity>
+        <activity android:name=".Activity.Dashboard.Tracking.TrackingActivity" />
+        <activity android:name=".Activity.Dashboard.Signature.sign" />
         <activity android:name=".Activity.Dashboard.Signature.SignActivity" />
         <activity android:name=".Activity.Dashboard.Signature.SignatureActivity" />
         <activity android:name=".Activity.Dashboard.JobInProgress.JobInProgressActivity" />

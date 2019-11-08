@@ -56,7 +56,7 @@ public class MyJobFragment extends Fragment {
     StandardProgressDialog standardProgressDialog;
 
     String userid,sender_address,sender_state,sender_city,sender_postcode,sender_country,receiver_address,receiver_state,
-            receiver_city,receiver_postcode,receiver_country;
+            receiver_city,receiver_postcode,receiver_country,parcel_status;
 
     List<MyJobClass> openJobClasses;
 
@@ -126,8 +126,14 @@ public class MyJobFragment extends Fragment {
                                 if(arrLISTING.length() == 0){
                                     dialogNoJob();
                                 }else {
-                                    for (int i =0; i <arrLISTING.length(); i++){
+                                    for (int i =arrLISTING.length()-1; i >=0; i--){
                                         JSONObject objectListing = arrLISTING.getJSONObject(i);
+
+                                        //GET STATUS PARCEL
+                                        if(objectListing.has("tracking_status")){
+                                            JSONObject objParcel = new JSONObject(objectListing.getString("tracking_status"));
+                                            parcel_status = objParcel.getString("status_description");
+                                        }
 
                                         //SENDER ADDRESS
                                         if(objectListing.has("sender_address")){
@@ -167,7 +173,8 @@ public class MyJobFragment extends Fragment {
                                                 receiver_state,
                                                 receiver_city,
                                                 receiver_postcode,
-                                                receiver_country
+                                                receiver_country,
+                                                parcel_status
                                         ));
                                         openJobAdapter = new MyJobAdapter(getContext(), openJobClasses, new MyJobAdapter.onClickJobByMonth() {
                                             @Override

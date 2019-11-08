@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.MainDashboard;
+import com.tuudi3pl.tuudirider.Activity.ResetPassword.ResetPasswordActivity;
 import com.tuudi3pl.tuudirider.Connection.URL;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.PreferenceManagerLogin;
@@ -74,6 +75,15 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 onClickButtonLogin();
+            }
+        });
+
+        textView_forgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent next = new Intent(getApplicationContext(), ResetPasswordActivity.class);
+//                startActivity(next);
+//                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

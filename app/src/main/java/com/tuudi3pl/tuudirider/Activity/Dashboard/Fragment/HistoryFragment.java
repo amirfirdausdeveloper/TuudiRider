@@ -123,7 +123,7 @@ public class HistoryFragment extends Fragment {
                                 if(arrLISTING.length() == 0){
                                     dialogNoJob();
                                 }else {
-                                    for (int i =0; i <arrLISTING.length(); i++){
+                                    for (int i =arrLISTING.length()-1; i >=0; i--){
                                         JSONObject objectListing = arrLISTING.getJSONObject(i);
 
                                         //SENDER ADDRESS
@@ -202,7 +202,7 @@ public class HistoryFragment extends Fragment {
     public void dialogNoJob() {
         new AlertDialog.Builder(getActivity())
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage("No Job Available")
+                .setMessage("No completed job Available")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

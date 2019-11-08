@@ -44,7 +44,7 @@ public class JobAcceptActivity extends AppCompatActivity {
     TextView textView_title,textView_order_id,textView_date,textView_delivery_title,textView_delivery_type,textView_weight,
             textView_title2,textView_pickup_address,textView_pickup_email,textView_pickup_name,textView_pickup_phone,
             textView_title3,textView_delivery_address,textView_delivery_email,textView_delivery_name,textView_delivery_no,
-            textView_title5,textView_remarks;
+            textView_title5,textView_remarks,textView_cn_title,textView_cn,textView_company_pickup,textView_company_delivery;;
 
     Button button_accept;
 
@@ -135,6 +135,10 @@ public class JobAcceptActivity extends AppCompatActivity {
         textView_title5 = findViewById(R.id.textView_title5);
         textView_remarks = findViewById(R.id.textView_remarks);
         button_accept = findViewById(R.id.button_accept);
+        textView_cn_title = findViewById(R.id.textView_cn_title);
+        textView_cn = findViewById(R.id.textView_cn);
+        textView_company_pickup = findViewById(R.id.textView_company_pickup);
+        textView_company_delivery = findViewById(R.id.textView_company_delivery);
 
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_delivery_title,getApplicationContext());
@@ -155,6 +159,10 @@ public class JobAcceptActivity extends AppCompatActivity {
         TypeFaceClass.setTypeFaceTextView(textView_title5,getApplicationContext());
         TypeFaceClass.setTypeFaceTextView(textView_remarks,getApplicationContext());
         TypeFaceClass.setTypeFaceButton(button_accept,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextViewBOLD(textView_cn_title,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_cn,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_company_pickup,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_company_delivery,getApplicationContext());
     }
 
     @Override
@@ -186,7 +194,9 @@ public class JobAcceptActivity extends AppCompatActivity {
                             for (int i =0; i < arrDetais.length(); i++){
                                 JSONObject obj = arrDetais.getJSONObject(i);
 
-                                textView_order_id.setText(order_id);
+                                textView_cn.setText(obj.getString("CN"));
+
+                                textView_order_id.setText("TD"+order_id);
                                 textView_date.setText(obj.getString("date"));
                                 textView_delivery_type.setText(obj.getString("delivery_type"));
                                 textView_weight.setText(obj.getString("delivery_weight"));
@@ -202,6 +212,7 @@ public class JobAcceptActivity extends AppCompatActivity {
                                 textView_pickup_email.setText(SENDER.getString("email"));
                                 textView_pickup_name.setText(SENDER.getString("fullname"));
                                 textView_pickup_phone.setText(SENDER.getString("phone"));
+                                textView_company_pickup.setText(SENDER.getString("company"));
 
                                 //DELIVERY INFORMATION
                                 JSONObject DELIVERY = new JSONObject(obj.getString("receiver_address"));
@@ -213,6 +224,7 @@ public class JobAcceptActivity extends AppCompatActivity {
                                 textView_delivery_email.setText(DELIVERY.getString("email"));
                                 textView_delivery_name.setText(DELIVERY.getString("fullname"));
                                 textView_delivery_no.setText(DELIVERY.getString("phone"));
+                                textView_company_delivery.setText(DELIVERY.getString("company"));
 
                             }
                         } catch (JSONException e) {

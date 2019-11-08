@@ -20,6 +20,7 @@ public class MyJobClass {
     private String receiver_city;
     private String receiver_postcode;
     private String receiver_country;
+    private String status_description;
 
     public MyJobClass(
             String order_id,
@@ -39,7 +40,8 @@ public class MyJobClass {
             String receiver_state,
             String receiver_city,
             String receiver_postcode,
-            String receiver_country
+            String receiver_country,
+            String status_description
     ){
         this.order_id = order_id;
         this.CN = CN;
@@ -59,6 +61,11 @@ public class MyJobClass {
         this.receiver_city = receiver_city;
         this.receiver_postcode = receiver_postcode;
         this.receiver_country = receiver_country;
+        this.status_description = status_description;
+    }
+
+    public String getStatus_description() {
+        return status_description;
     }
 
     public String getDate() {
