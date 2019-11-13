@@ -32,12 +32,28 @@
 
         <TextView
             android:id="@+id/textView_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_weight="1"
             android:text="JOB DETAILS"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:layout_marginLeft="35dp"/>
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView_track"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/icon_tracking"
+                tools:ignore="VectorDrawableCompat" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -112,7 +128,7 @@
                 android:text="DELIVERY TYPE"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,6 +159,28 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView_words33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Parcel Type : "
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textView_status_parce3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

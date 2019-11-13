@@ -21,6 +21,7 @@ public class MyJobClass {
     private String receiver_postcode;
     private String receiver_country;
     private String status_description;
+    private String parcel_type;
 
     public MyJobClass(
             String order_id,
@@ -41,7 +42,8 @@ public class MyJobClass {
             String receiver_city,
             String receiver_postcode,
             String receiver_country,
-            String status_description
+            String status_description,
+            String parcel_type
     ){
         this.order_id = order_id;
         this.CN = CN;
@@ -62,6 +64,11 @@ public class MyJobClass {
         this.receiver_postcode = receiver_postcode;
         this.receiver_country = receiver_country;
         this.status_description = status_description;
+        this.parcel_type = parcel_type;
+    }
+
+    public String getParcel_type() {
+        return parcel_type;
     }
 
     public String getStatus_description() {

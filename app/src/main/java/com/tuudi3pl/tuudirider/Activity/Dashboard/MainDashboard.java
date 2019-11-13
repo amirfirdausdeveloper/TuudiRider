@@ -24,6 +24,7 @@ import com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.MyJobFragment;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.OpenJobFragment;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.SettingFragment;
 import com.tuudi3pl.tuudirider.R;
+import com.tuudi3pl.tuudirider.Utils.PreferenceManagerLogin;
 import com.tuudi3pl.tuudirider.Utils.TypeFaceClass;
 
 public class MainDashboard extends AppCompatActivity {
@@ -32,30 +33,40 @@ public class MainDashboard extends AppCompatActivity {
 
     private static long back_pressed;
 
+    PreferenceManagerLogin session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dashboard);
 
-        navigation = findViewById(R.id.navigationView);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        BottomNavigationHelper.removeShiftMode(navigation);
-        navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
-        setNavigationTypeface();
+        session = new PreferenceManagerLogin(getApplicationContext());
 
-
-        if(getIntent().getExtras() != null){
-            if(getIntent().getStringExtra("onclick").equals("Open Jobs")){
-                navigation.setSelectedItemId(R.id.openJob);
-            }else if(getIntent().getStringExtra("onclick").equals("My Jobs")){
-                navigation.setSelectedItemId(R.id.myJob);
-            }else if(getIntent().getStringExtra("onclick").equals("Complete Jobs")){
-                navigation.setSelectedItemId(R.id.history);
-            }
+        if(session.checkLogin()){
+            finish();
         }else{
-            Fragment fragment = new DashboardFragment();
-            loadFragment(fragment);
+            navigation = findViewById(R.id.navigationView);
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            BottomNavigationHelper.removeShiftMode(navigation);
+            navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+            setNavigationTypeface();
+
+
+            if(getIntent().hasExtra("onclick")){
+                if(getIntent().getStringExtra("onclick").equals("Open Jobs")){
+                    navigation.setSelectedItemId(R.id.openJob);
+                }else if(getIntent().getStringExtra("onclick").equals("My Jobs")){
+                    navigation.setSelectedItemId(R.id.myJob);
+                }else if(getIntent().getStringExtra("onclick").equals("Complete Jobs")){
+                    navigation.setSelectedItemId(R.id.history);
+                }
+            }else{
+                Fragment fragment = new DashboardFragment();
+                loadFragment(fragment);
+            }
         }
+
+
 
     }
 

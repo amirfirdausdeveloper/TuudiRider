@@ -116,6 +116,7 @@ public class MyJobFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
+                        Log.d("JSON",jsonObject.toString());
                         if(jsonObject == null){
                             dialogNoJob();
                         }
@@ -174,7 +175,8 @@ public class MyJobFragment extends Fragment {
                                                 receiver_city,
                                                 receiver_postcode,
                                                 receiver_country,
-                                                parcel_status
+                                                parcel_status,
+                                                objectListing.getString("parcel_type")
                                         ));
                                         openJobAdapter = new MyJobAdapter(getContext(), openJobClasses, new MyJobAdapter.onClickJobByMonth() {
                                             @Override

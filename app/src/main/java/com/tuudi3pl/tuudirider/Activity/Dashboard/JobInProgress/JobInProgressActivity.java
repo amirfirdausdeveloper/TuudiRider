@@ -44,7 +44,8 @@ public class JobInProgressActivity extends AppCompatActivity {
     TextView textView_title,textView_order_id,textView_date,textView_delivery_title,textView_delivery_type,textView_weight,
             textView_title2,textView_pickup_address,textView_pickup_email,textView_pickup_name,textView_pickup_phone,
             textView_title3,textView_delivery_address,textView_delivery_email,textView_delivery_name,textView_delivery_no,
-            textView_title5,textView_remarks,textView_cn_title,textView_cn,textView_company_pickup,textView_company_delivery;
+            textView_title5,textView_remarks,textView_cn_title,textView_cn,textView_company_pickup,textView_company_delivery
+            ,textView_words33,textView_status_parce3;
 
     Button button_accept,button_accept2;
 
@@ -97,11 +98,11 @@ public class JobInProgressActivity extends AppCompatActivity {
         button_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(button_accept.getText().equals("On the way Collection")){
+                if(button_accept.getText().equals("Rider On The Way for Collection")){
                     updatestatusButton("8","",button_accept.getText().toString());
                 }else if(button_accept.getText().equals("Order has been collected")){
                     updatestatusButton("9","",button_accept.getText().toString());
-                }else if(button_accept.getText().equals("Order on the way for delivery")){
+                }else if(button_accept.getText().equals("Rider On The Way for Delivery")){
                     updatestatusButton("12","",button_accept.getText().toString());
                 }else if(button_accept.getText().equals("Success Delivery")){
 //                    updatestatusButton("4","",button_accept.getText().toString());
@@ -152,7 +153,11 @@ public class JobInProgressActivity extends AppCompatActivity {
         textView_company_pickup = findViewById(R.id.textView_company_pickup);
         textView_company_delivery = findViewById(R.id.textView_company_delivery);
         imageView_track = findViewById(R.id.imageView_track);
+        textView_words33 = findViewById(R.id.textView_words33);
+        textView_status_parce3 = findViewById(R.id.textView_status_parce3);
 
+        TypeFaceClass.setTypeFaceTextView(textView_words33,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_status_parce3,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_delivery_title,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title2,getApplicationContext());
@@ -210,18 +215,24 @@ public class JobInProgressActivity extends AppCompatActivity {
 
                                 JSONObject objectParace = new JSONObject(obj.getString("tracking_status"));
                                 parcel_status = objectParace.getString("status_id");
-
+                                textView_status_parce3.setText(obj.getString("parcel_type"));
                                 textView_cn.setText(obj.getString("CN"));
 
-                                if (parcel_status.equals("10") || parcel_status.equals("13")) {
-                                    button_accept.setText("On the way Collection");
+                                if (parcel_status.equals("10")) {
+                                    button_accept.setText("Rider On The Way for Collection");
                                     button_accept2.setText("Pending Collection");
+                                }else if(parcel_status.equals("13")){
+                                    button_accept.setText("Order has been collected");
+                                    button_accept2.setVisibility(View.GONE);
                                 }else if(parcel_status.equals("8")){
                                     button_accept.setText("Order has been collected");
                                     button_accept2.setText("Pending Collection");
-                                }else if(parcel_status.equals("9") || parcel_status.equals("3")){
-                                    button_accept.setText("Order on the way for delivery");
+                                }else if(parcel_status.equals("9")){
+                                    button_accept.setText("Rider On The Way for Delivery");
                                     button_accept2.setText("Pending Delivery");
+                                }else if(parcel_status.equals("3")){
+                                    button_accept.setText("Rider On The Way for Delivery");
+                                    button_accept2.setVisibility(View.GONE);
                                 }else if(parcel_status.equals("12")){
                                     button_accept.setText("Success Delivery");
                                     button_accept2.setText("Pending Delivery");

@@ -71,6 +71,7 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             }
         });
 
+        holder.textView_status_parce3.setText(jobByMonthClass.getParcel_type());
         holder.textView_status_parcel.setText(jobByMonthClass.getStatus_description().toUpperCase());
     }
 
@@ -82,7 +83,7 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
         TextView texView_date,textView_shipping_type,textView_words,textView_delivery_type,textView_delivery_weight,
-                textView_address,textView_words2,textView_remarks,textView_words3,textView_status_parcel;
+                textView_address,textView_words2,textView_remarks,textView_words3,textView_status_parcel,textView_status_parce3,textView_words33;
 
 
         public ProductViewHolder(View itemView) {
@@ -96,6 +97,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             textView_address  = itemView.findViewById(R.id.textView_address);
             textView_words3  = itemView.findViewById(R.id.textView_words3);
             textView_status_parcel  = itemView.findViewById(R.id.textView_status_parcel);
+            textView_status_parce3  = itemView.findViewById(R.id.textView_status_parce3);
+            textView_words33  = itemView.findViewById(R.id.textView_words33);
 
             TypeFaceClass.setTypeFaceTextViewBOLD(texView_date,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_shipping_type,mCtx);
@@ -104,6 +107,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             TypeFaceClass.setTypeFaceTextView(textView_delivery_weight,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_address,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_words3,mCtx);
+            TypeFaceClass.setTypeFaceTextView(textView_words33,mCtx);
+            TypeFaceClass.setTypeFaceTextView(textView_status_parce3,mCtx);
             TypeFaceClass.setTypeFaceTextViewBOLD(textView_status_parcel,mCtx);
 
         }

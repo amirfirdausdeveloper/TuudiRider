@@ -107,18 +107,41 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView_words3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PARCEL STATUS : "
+                android:text="Parcel Status : "
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/textView_status_parcel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/colorTuudi"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_words33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parcel Type : "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView_status_parce3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"

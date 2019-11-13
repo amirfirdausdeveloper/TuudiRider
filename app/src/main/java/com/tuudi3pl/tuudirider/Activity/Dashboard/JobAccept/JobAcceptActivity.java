@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.MainDashboard;
+import com.tuudi3pl.tuudirider.Activity.Dashboard.Tracking.TrackingActivity;
 import com.tuudi3pl.tuudirider.Adapter.OpenJobAdapter;
 import com.tuudi3pl.tuudirider.Class.OpenJobClass;
 import com.tuudi3pl.tuudirider.Connection.URL;
@@ -39,12 +40,13 @@ public class JobAcceptActivity extends AppCompatActivity {
 
     String order_id,userid,which,CN;
 
-    ImageView imageView_back;
+    ImageView imageView_back,imageView_track;
 
     TextView textView_title,textView_order_id,textView_date,textView_delivery_title,textView_delivery_type,textView_weight,
             textView_title2,textView_pickup_address,textView_pickup_email,textView_pickup_name,textView_pickup_phone,
             textView_title3,textView_delivery_address,textView_delivery_email,textView_delivery_name,textView_delivery_no,
-            textView_title5,textView_remarks,textView_cn_title,textView_cn,textView_company_pickup,textView_company_delivery;;
+            textView_title5,textView_remarks,textView_cn_title,textView_cn,textView_company_pickup,textView_company_delivery
+            ,textView_words33,textView_status_parce3;
 
     Button button_accept;
 
@@ -107,10 +109,22 @@ public class JobAcceptActivity extends AppCompatActivity {
             }
         });
 
+        imageView_track.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(getApplicationContext(), TrackingActivity.class);
+                next.putExtra("cn",CN);
+                startActivity(next);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
         if(which.equals("history")){
             button_accept.setVisibility(View.GONE);
+            imageView_track.setVisibility(View.VISIBLE);
         }else{
             button_accept.setVisibility(View.VISIBLE);
+            imageView_track.setVisibility(View.GONE);
         }
     }
 
@@ -139,7 +153,12 @@ public class JobAcceptActivity extends AppCompatActivity {
         textView_cn = findViewById(R.id.textView_cn);
         textView_company_pickup = findViewById(R.id.textView_company_pickup);
         textView_company_delivery = findViewById(R.id.textView_company_delivery);
+        textView_words33 = findViewById(R.id.textView_words33);
+        textView_status_parce3 = findViewById(R.id.textView_status_parce3);
+        imageView_track= findViewById(R.id.imageView_track);
 
+        TypeFaceClass.setTypeFaceTextView(textView_words33,getApplicationContext());
+        TypeFaceClass.setTypeFaceTextView(textView_status_parce3,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_delivery_title,getApplicationContext());
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title2,getApplicationContext());
@@ -195,7 +214,7 @@ public class JobAcceptActivity extends AppCompatActivity {
                                 JSONObject obj = arrDetais.getJSONObject(i);
 
                                 textView_cn.setText(obj.getString("CN"));
-
+                                textView_status_parce3.setText(obj.getString("parcel_type"));
                                 textView_order_id.setText("TD"+order_id);
                                 textView_date.setText(obj.getString("date"));
                                 textView_delivery_type.setText(obj.getString("delivery_type"));

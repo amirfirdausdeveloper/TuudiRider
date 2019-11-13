@@ -15,20 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeTuudi"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.ResetPassword.ResetPasswordActivity"></activity>
+        <activity android:name=".Activity.Dashboard.ForgotPassword.ForgotPasswordActivity"></activity>
+        <activity android:name=".Activity.ResetPassword.ResetPasswordActivity" />
         <activity android:name=".Activity.Dashboard.Tracking.TrackingActivity" />
         <activity android:name=".Activity.Dashboard.Signature.sign" />
         <activity android:name=".Activity.Dashboard.Signature.SignActivity" />
         <activity android:name=".Activity.Dashboard.Signature.SignatureActivity" />
         <activity android:name=".Activity.Dashboard.JobInProgress.JobInProgressActivity" />
         <activity android:name=".Activity.Dashboard.JobAccept.JobAcceptActivity" />
-        <activity android:name=".Activity.Dashboard.MainDashboard" />
-        <activity android:name=".Activity.Login.LoginActivity">
+        <activity android:name=".Activity.Dashboard.MainDashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activity.Login.LoginActivity">
+
         </activity>
     </application>
 
