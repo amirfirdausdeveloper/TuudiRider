@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "993908493310",
+    "firebase_url": "https://tuudirider.firebaseio.com",
+    "project_id": "tuudirider",
+    "storage_bucket": "tuudirider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993908493310:android:94381c0b0bfe84bb6f4eaf",
+        "android_client_info": {
+          "package_name": "com.tuudi3pl.tuudirider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993908493310-krvir55gt5tlk47o9qo8kqfnde0rkjkb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tuudi3pl.tuudirider",
+            "certificate_hash": "73496376fc1cd6fe743e1b5083638cf80a291f0e"
+          }
+        },
+        {
+          "client_id": "993908493310-9omgb8fs2c6uaesf6rlk50sh380r6dt7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgFAxnFIf_BqETQGGCrA9oCm7ML8eu0pU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993908493310-9omgb8fs2c6uaesf6rlk50sh380r6dt7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

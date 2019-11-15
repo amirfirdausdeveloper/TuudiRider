@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -218,6 +219,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 textView_status_parce3.setText(obj.getString("parcel_type"));
                                 textView_cn.setText(obj.getString("CN"));
 
+                                Log.d("parcel_status",parcel_status);
                                 if (parcel_status.equals("10")) {
                                     button_accept.setText("Rider On The Way for Collection");
                                     button_accept2.setText("Pending Collection");

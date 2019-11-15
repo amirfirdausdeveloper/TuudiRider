@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeTuudi"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.Dashboard.ForgotPassword.ForgotPasswordActivity"></activity>
+        <activity android:name=".Activity.Register.RegisterActivity"></activity>
+        <activity android:name=".Activity.Dashboard.ForgotPassword.ForgotPasswordActivity" />
         <activity android:name=".Activity.ResetPassword.ResetPasswordActivity" />
         <activity android:name=".Activity.Dashboard.Tracking.TrackingActivity" />
         <activity android:name=".Activity.Dashboard.Signature.sign" />
@@ -26,12 +27,34 @@
         <activity android:name=".Activity.Dashboard.MainDashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.Login.LoginActivity">
+        <activity android:name=".Activity.Login.LoginActivity"></activity>
 
-        </activity>
+        <service android:name=".FirebaseNotification.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".FirebaseNotification.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorTuudi" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="myChannel" />
     </application>
 
 </manifest>
