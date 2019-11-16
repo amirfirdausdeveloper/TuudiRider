@@ -72,8 +72,7 @@ public class LoginActivity extends AppCompatActivity{
 
         declareAndCustomFont();
 
-        et_username.setText("nazrul.hakiim@mobkini.com");
-        et_password.setText("66");
+
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

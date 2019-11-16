@@ -96,35 +96,7 @@ public class JobInProgressActivity extends AppCompatActivity {
         });
 
 
-        button_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button_accept.getText().equals("Rider On The Way for Collection")){
-                    updatestatusButton("8","",button_accept.getText().toString());
-                }else if(button_accept.getText().equals("Order has been collected")){
-                    updatestatusButton("9","",button_accept.getText().toString());
-                }else if(button_accept.getText().equals("Rider On The Way for Delivery")){
-                    updatestatusButton("12","",button_accept.getText().toString());
-                }else if(button_accept.getText().equals("Success Delivery")){
-//                    updatestatusButton("4","",button_accept.getText().toString());
-                    Intent next = new Intent(getApplicationContext(), SignatureActivity.class);
-                    next.putExtra("order_id",order_id);
-                    next.putExtra("CN",CN);
-                    startActivity(next);
-                }
-            }
-        });
 
-        button_accept2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button_accept2.getText().equals("Pending Collection")){
-                    updatestatusButton("13","",button_accept2.getText().toString());
-                }else if(button_accept2.getText().equals("Pending Delivery")){
-                    updatestatusButton("3","",button_accept2.getText().toString());
-                }
-            }
-        });
     }
 
     private void declare() {
@@ -220,25 +192,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 textView_cn.setText(obj.getString("CN"));
 
                                 Log.d("parcel_status",parcel_status);
-                                if (parcel_status.equals("10")) {
-                                    button_accept.setText("Rider On The Way for Collection");
-                                    button_accept2.setText("Pending Collection");
-                                }else if(parcel_status.equals("13")){
-                                    button_accept.setText("Order has been collected");
-                                    button_accept2.setVisibility(View.GONE);
-                                }else if(parcel_status.equals("8")){
-                                    button_accept.setText("Order has been collected");
-                                    button_accept2.setText("Pending Collection");
-                                }else if(parcel_status.equals("9")){
-                                    button_accept.setText("Rider On The Way for Delivery");
-                                    button_accept2.setText("Pending Delivery");
-                                }else if(parcel_status.equals("3")){
-                                    button_accept.setText("Rider On The Way for Delivery");
-                                    button_accept2.setVisibility(View.GONE);
-                                }else if(parcel_status.equals("12")){
-                                    button_accept.setText("Success Delivery");
-                                    button_accept2.setText("Pending Delivery");
-                                }
+                                getStatusButton(parcel_status);
 
                                 CN = obj.getString("CN");
                                 textView_order_id.setText("TD"+order_id);
@@ -311,6 +265,94 @@ public class JobInProgressActivity extends AppCompatActivity {
                                     }
                                 })
                                 .show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                standardProgressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36");
+                return super.getHeaders();
+            }
+        };
+        Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
+    }
+
+    private void getStatusButton(final String statusCode){
+        JsonObjectRequest jsonReq = new JsonObjectRequest(
+                Request.Method.GET,
+                "https://tuudi3pl.com/riderapi/statuslist.php?key=ea5a5063a6684896b99c952e87c2fd6b",
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        try {
+                            JSONArray arr = new JSONArray(jsonObject.getString("status"));
+                            for (int i =0; i < arr.length(); i++){
+                                JSONObject obj = arr.getJSONObject(i);
+                                if(statusCode.equals("10")  || parcel_status.equals("13")){
+                                    if(obj.getString("id").equals("8")){
+                                        button_accept.setText(obj.getString("label_display"));
+                                        button_accept2.setVisibility(View.GONE);
+                                    }
+                                }else if(parcel_status.equals("8")){
+                                    if(obj.getString("id").equals("9")){
+                                        button_accept.setText(obj.getString("label_display"));
+                                    }
+                                    button_accept2.setText("Pending Collection");
+
+                                }else if(parcel_status.equals("9") || parcel_status.equals("3")){
+                                    if(obj.getString("id").equals("12")){
+                                        button_accept.setText(obj.getString("label_display"));
+                                        button_accept2.setVisibility(View.GONE);
+                                    }
+                                }else if(parcel_status.equals("12")){
+                                    if(obj.getString("id").equals("4")){
+                                        button_accept.setText(obj.getString("label_display"));
+                                    }
+                                    if(obj.getString("id").equals("3")){
+                                        button_accept2.setText(obj.getString("label_display"));
+                                    }
+                                }
+
+                                button_accept.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(statusCode.equals("10")  || parcel_status.equals("13")){
+                                            updatestatusButton("8","",button_accept.getText().toString());
+                                        }else if(parcel_status.equals("8")){
+                                            updatestatusButton("9","",button_accept.getText().toString());
+                                        }else if(parcel_status.equals("9")  || parcel_status.equals("3")){
+                                            updatestatusButton("12","",button_accept.getText().toString());
+                                        }else if(parcel_status.equals("12")){
+                                            Intent next = new Intent(getApplicationContext(), SignatureActivity.class);
+                                            next.putExtra("order_id",order_id);
+                                            next.putExtra("CN",CN);
+                                            startActivity(next);
+                                        }
+                                    }
+                                });
+
+                                button_accept2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(parcel_status.equals("8")){
+                                            updatestatusButton("13","",button_accept2.getText().toString());
+                                        }else if(parcel_status.equals("12")){
+                                            updatestatusButton("3","",button_accept2.getText().toString());
+                                        }
+                                    }
+                                });
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
