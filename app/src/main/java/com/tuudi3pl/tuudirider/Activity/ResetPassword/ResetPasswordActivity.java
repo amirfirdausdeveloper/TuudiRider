@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     StandardProgressDialog standardProgressDialog;
 
+    ImageView imageView_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         standardProgressDialog = new StandardProgressDialog(this.getWindow().getContext());
 
         et_username = findViewById(R.id.et_username);
+        imageView_back = findViewById(R.id.imageView_back);
         button_reset = findViewById(R.id.button_reset);
 
         button_reset.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +63,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         });
 
+        imageView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
     }
 

@@ -89,7 +89,7 @@ public class SignatureActivity extends AppCompatActivity {
         button_submit = findViewById(R.id.button_submit);
 
 
-        consignmentET.setText(order_id);
+        consignmentET.setText(CN);
 
         iv_sign.setOnClickListener(new View.OnClickListener() {
             @Override
