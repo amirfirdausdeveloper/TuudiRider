@@ -17,15 +17,19 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.MainDashboard;
 import com.tuudi3pl.tuudirider.Activity.Register.RegisterActivity;
 import com.tuudi3pl.tuudirider.Activity.ResetPassword.ResetPasswordActivity;
 import com.tuudi3pl.tuudirider.Connection.URL;
+import com.tuudi3pl.tuudirider.FirebaseNotification.MyFirebaseInstanceIdService;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.PreferenceManagerLogin;
 import com.tuudi3pl.tuudirider.Utils.StandardProgressDialog;
@@ -36,6 +40,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 public class LoginActivity extends AppCompatActivity{
 
@@ -142,16 +149,13 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void login(){
-        JsonObjectRequest jsonReq = new JsonObjectRequest(
-                Request.Method.GET,
-                URL.URL_LOGIN+"username="+et_username.getText().toString()+"&password="+et_password.getText().toString(),
-                null,
-                new Response.Listener<JSONObject>() {
+        StringRequest stringRequest = new StringRequest(POST,   URL.URL_LOGIN+"username="+et_username.getText().toString()+"&password="+et_password.getText().toString(),
+                new com.android.volley.Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject jsonObject) {
+                    public void onResponse(String response) {
                         standardProgressDialog.dismiss();
-                        Log.d("yaw",jsonObject.toString());
                         try {
+                            JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getString("code").equals("0000")){
                                 session.createLoginSession(jsonObject.getString("userid"));
                                 Intent next = new Intent(getApplicationContext(), MainDashboard.class);
@@ -164,21 +168,36 @@ public class LoginActivity extends AppCompatActivity{
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                standardProgressDialog.dismiss();
-            }
-        }){
-            @Override
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        standardProgressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"Decline Job Error",Toast.LENGTH_LONG).show();
+                    }
+                }) {
+
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36");
-                return super.getHeaders();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
             }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("key","ea5a5063a6684896b99c952e87c2fd6b");
+                params.put("username",et_username.getText().toString());
+                params.put("password",et_password.getText().toString());
+                params.put("fkey", FirebaseInstanceId.getInstance().getToken());
+                Log.d("param",params.toString());
+                return params;
+            }
+
         };
-        Volley.newRequestQueue(getBaseContext()).add(jsonReq);
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
     }
 
     public void popUpDialogError(String message) {
