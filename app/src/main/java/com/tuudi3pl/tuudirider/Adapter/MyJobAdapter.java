@@ -60,6 +60,10 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
         holder.textView_delivery_weight.setText(jobByMonthClass.getDelivery_weight());
         holder.textView_address.setText(jobByMonthClass.getCN());
 
+
+        holder.textView_city_sender.setText(jobByMonthClass.getSender_city());
+        holder.textView_city_receiver.setText(jobByMonthClass.getReceiver_city());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +87,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
         TextView texView_date,textView_shipping_type,textView_words,textView_delivery_type,textView_delivery_weight,
-                textView_address,textView_words2,textView_remarks,textView_words3,textView_status_parcel,textView_status_parce3,textView_words33;
+                textView_address,textView_words2,textView_remarks,textView_words3,textView_status_parcel,textView_status_parce3,textView_words33,
+                textView_city_sender,textView_city_receiver;;
 
 
         public ProductViewHolder(View itemView) {
@@ -99,6 +104,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             textView_status_parcel  = itemView.findViewById(R.id.textView_status_parcel);
             textView_status_parce3  = itemView.findViewById(R.id.textView_status_parce3);
             textView_words33  = itemView.findViewById(R.id.textView_words33);
+            textView_city_sender  = itemView.findViewById(R.id.textView_city_sender);
+            textView_city_receiver  = itemView.findViewById(R.id.textView_city_receiver);
 
             TypeFaceClass.setTypeFaceTextViewBOLD(texView_date,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_shipping_type,mCtx);
@@ -110,6 +117,8 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             TypeFaceClass.setTypeFaceTextView(textView_words33,mCtx);
             TypeFaceClass.setTypeFaceTextView(textView_status_parce3,mCtx);
             TypeFaceClass.setTypeFaceTextViewBOLD(textView_status_parcel,mCtx);
+            TypeFaceClass.setTypeFaceTextView(textView_city_sender,mCtx);
+            TypeFaceClass.setTypeFaceTextView(textView_city_receiver,mCtx);
 
         }
     }
