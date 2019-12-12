@@ -48,7 +48,7 @@ public class TrackingActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.getSettings().setBuiltInZoomControls(true);
 
-        webView.loadUrl("https://tuudi3pl.com/v2/tracking.php?tid="+cn);
+        webView.loadUrl("https://tuudi3pl.com/v3/tracking.php?tid="+cn);
     }
 
     @Override

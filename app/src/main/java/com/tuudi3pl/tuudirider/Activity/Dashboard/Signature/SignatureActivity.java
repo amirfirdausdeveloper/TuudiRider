@@ -8,8 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +38,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +78,11 @@ public class SignatureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signature);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         standardProgressDialog = new StandardProgressDialog(this.getWindow().getContext());
         session = new PreferenceManagerLogin(getApplicationContext());
@@ -112,7 +125,39 @@ public class SignatureActivity extends AppCompatActivity {
                 if(nameET.getText().toString().equals("") || icET.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"Please fill in the value",Toast.LENGTH_LONG).show();
                 }else if(mSignatureImg == null){
-                    Toast.makeText(getApplicationContext(),"Please complete signature first",Toast.LENGTH_LONG).show();
+
+                    new AlertDialog.Builder(SignatureActivity.this)
+                            .setCancelable(false)
+                            .setMessage("are you sure want to submit?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    standardProgressDialog.show();
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                if(isConnected(getApplicationContext())){
+                                                    uploadDataWithoutPicture();
+                                                }else{
+                                                    standardProgressDialog.dismiss();
+                                                    Toast.makeText(getApplicationContext(),"Please try again",Toast.LENGTH_LONG).show();
+                                                }
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, 1000);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
                 }else{
 
                     new AlertDialog.Builder(SignatureActivity.this)
@@ -121,12 +166,24 @@ public class SignatureActivity extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
                                     standardProgressDialog.show();
-                                    try {
-                                        savebitmap(mSignatureImg);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                if(isConnected(getApplicationContext())){
+                                                    savebitmap(mSignatureImg);
+                                                }else{
+                                                    standardProgressDialog.dismiss();
+                                                    Toast.makeText(getApplicationContext(),"Please try again",Toast.LENGTH_LONG).show();
+                                                }
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, 1000);
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -188,6 +245,98 @@ public class SignatureActivity extends AppCompatActivity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void uploadDataWithoutPicture() throws IOException {
+        String charset = "UTF-8";
+        String requestURL = "https://tuudi3pl.com/riderapi/signature.php";
+        MultipartUtility multipart = new MultipartUtility(requestURL, charset);
+        multipart.addFormField("key", "ea5a5063a6684896b99c952e87c2fd6b");
+        multipart.addFormField("order_id", order_id);
+        multipart.addFormField("recipient_name", nameET.getText().toString());
+        multipart.addFormField("recipient_nric", icET.getText().toString());
+        String response = String.valueOf(multipart.finish()); // response from server.
+        Log.d("response",response);
+
+        try {
+            JSONArray arr = new JSONArray(response);
+            for (int i = 0; i < arr.length(); i++){
+                standardProgressDialog.dismiss();
+                JSONObject obj = arr.getJSONObject(i);
+                if(obj.getString("code").equals("0000")){
+                    Intent next = new Intent(getApplicationContext(), MainDashboard.class);
+                    startActivity(next);
+                }else{
+                    new AlertDialog.Builder(SignatureActivity.this)
+                            .setCancelable(false)
+                            .setMessage(obj.getString("message"))
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private boolean isConnected(Context context) {
+        final boolean[] online = {false};
+        ConnectivityManager cm = (ConnectivityManager)context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+
+            final long time = System.currentTimeMillis();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        java.net.URL url = new java.net.URL("http://www.google.com");
+                        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                        urlc.setConnectTimeout(5000);
+                        urlc.setReadTimeout(5000);
+                        urlc.connect();
+                        if (urlc.getResponseCode() == 200) {
+                            online[0] = true;
+                        }
+                    } catch (IOException e) {
+
+                    }
+                }
+            }).start();
+
+            while (((System.currentTimeMillis() - time) <= 5000)) {
+                if ((System.currentTimeMillis() - time) >= 5000) {
+                    return online[0];
+                }
+            }
+
+
+        }
+
+        return false;
+
+    }
+
+    public boolean isOnline() {
+        try {
+            HttpURLConnection httpURLConnection = (HttpURLConnection)(new java.net.URL("http://www.google.com").openConnection());
+            httpURLConnection.setRequestProperty("User-Agent", "Test");
+            httpURLConnection.setRequestProperty("Connection", "close");
+            httpURLConnection.setConnectTimeout(1000);
+            httpURLConnection.connect();
+            return (httpURLConnection.getResponseCode() == 200);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
