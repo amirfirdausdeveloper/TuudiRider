@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class JobAcceptActivity extends AppCompatActivity {
 
-    String order_id,userid,which,CN;
+    String order_id,userid,which,CN,status;
 
     ImageView imageView_back,imageView_track;
 
@@ -74,6 +74,7 @@ public class JobAcceptActivity extends AppCompatActivity {
         which = getIntent().getStringExtra("which");
         order_id = getIntent().getStringExtra("order_id");
         CN = getIntent().getStringExtra("CN");
+        status = getIntent().getStringExtra("status");
 
         declare();
 
@@ -96,7 +97,12 @@ public class JobAcceptActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 standardProgressDialog.show();
-                                acceptJob();
+                                if (status.equals("pickup")){
+                                    acceptJob();
+                                }else {
+                                    acceptJobDelivery();
+                                }
+
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -201,7 +207,7 @@ public class JobAcceptActivity extends AppCompatActivity {
     private void getData(){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_JOB_DETAILS+order_id,
+                URL.URL_JOB_DETAILS+order_id+"&userid="+userid,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -270,7 +276,7 @@ public class JobAcceptActivity extends AppCompatActivity {
     private void acceptJob(){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_ACCEPT_JOB+userid+"&order_id="+order_id,
+                URL.URL_ACCEPT_JOB+userid+"&order_id="+order_id+"&job_type=1",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -294,10 +300,37 @@ public class JobAcceptActivity extends AppCompatActivity {
         Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
     }
 
+    private void acceptJobDelivery(){
+        JsonObjectRequest jsonReq = new JsonObjectRequest(
+                Request.Method.GET,
+                URL.URL_ACCEPT_JOB+userid+"&order_id="+order_id+"&job_type=2",
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        updatestatusButton("3","","");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                standardProgressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36");
+                return super.getHeaders();
+            }
+        };
+        Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
+    }
+
      private void updatestatusButton(String statusCode, String remarks, final String message){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status="+statusCode+"&remarks="+remarks+"&receiver_name=",
+                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status="+statusCode+"&remarks="+remarks+"&receiver_name=&userid="+userid,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -323,4 +356,6 @@ public class JobAcceptActivity extends AppCompatActivity {
         };
         Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
     }
+
+
 }

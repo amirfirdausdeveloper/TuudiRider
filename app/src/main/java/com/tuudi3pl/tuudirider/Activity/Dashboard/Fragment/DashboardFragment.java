@@ -40,7 +40,10 @@ import java.util.Map;
 public class DashboardFragment extends Fragment {
 
     TextView textView_title,textView_email,textView_name,textView_valueOpenJob,textView_openjob,
-            textView_valueMyJob,textView_myJob,textView_valueCompleteJob,textView_completeJob;
+            textView_valueMyJob,textView_myJob,textView_valueCompleteJob,textView_completeJob
+            ,textView_valueOpenJobDelivery,textView_openjobDelivery
+            ,textView_valueMyJobDelivery,textView_myJobDelivery,
+            textView_valueCompleteJobDelivery,textView_completeJobDelivery;
 
     PreferenceManagerLogin session;
 
@@ -48,7 +51,7 @@ public class DashboardFragment extends Fragment {
 
     String userid;
 
-    LinearLayout linear_openJob,linear_myJob,linear_completeJob;
+    LinearLayout linear_openJob,linear_myJob,linear_completeJob,linear_openJobDelivery,linear_myJobDelivery,linear_completeJobDelivery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,9 +118,21 @@ public class DashboardFragment extends Fragment {
         textView_myJob = v.findViewById(R.id.textView_myJob);
         textView_valueCompleteJob = v.findViewById(R.id.textView_valueCompleteJob);
         textView_completeJob = v.findViewById(R.id.textView_completeJob);
+        textView_valueOpenJobDelivery = v.findViewById(R.id.textView_valueOpenJobDelivery);
+        textView_openjobDelivery = v.findViewById(R.id.textView_openjobDelivery);
+        textView_valueMyJobDelivery = v.findViewById(R.id.textView_valueMyJobDelivery);
+        textView_myJobDelivery = v.findViewById(R.id.textView_myJobDelivery);
+        textView_valueCompleteJobDelivery = v.findViewById(R.id.textView_valueCompleteJobDelivery);
+        textView_completeJobDelivery = v.findViewById(R.id.textView_completeJobDelivery);
+
         linear_openJob = v.findViewById(R.id.linear_openJob);
         linear_myJob = v.findViewById(R.id.linear_myJob);
         linear_completeJob = v.findViewById(R.id.linear_completeJob);
+
+        //delivery
+        linear_openJobDelivery = v.findViewById(R.id.linear_openJobDelivery);
+        linear_myJobDelivery = v.findViewById(R.id.linear_myJobDelivery);
+        linear_completeJobDelivery = v.findViewById(R.id.linear_completeJobDelivery);
 
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_email,getActivity());
@@ -128,6 +143,12 @@ public class DashboardFragment extends Fragment {
         TypeFaceClass.setTypeFaceTextView(textView_myJob,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_valueCompleteJob,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_completeJob,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_valueOpenJobDelivery,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_openjobDelivery,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_valueMyJobDelivery,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_myJobDelivery,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_valueCompleteJobDelivery,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_completeJobDelivery,getActivity());
     }
 
     @Override
@@ -186,9 +207,12 @@ public class DashboardFragment extends Fragment {
                         try {
                             if(jsonObject.has("data")){
                                 JSONObject dataOBJ = new JSONObject(jsonObject.getString("data"));
-                                textView_valueOpenJob.setText(dataOBJ.getString("openjob"));
-                                textView_valueMyJob.setText(dataOBJ.getString("myjob"));
-                                textView_valueCompleteJob.setText(dataOBJ.getString("completejob"));
+                                textView_valueOpenJob.setText(dataOBJ.getString("openpickupjob"));
+                                textView_valueOpenJobDelivery.setText(dataOBJ.getString("opendeliverjob"));
+                                textView_valueMyJob.setText(dataOBJ.getString("mypickupjob"));
+                                textView_valueMyJobDelivery.setText(dataOBJ.getString("mydeliverjob"));
+                                textView_valueCompleteJob.setText(dataOBJ.getString("completepickupjob"));
+                                textView_valueCompleteJobDelivery.setText(dataOBJ.getString("completedeliverjob"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -174,7 +174,7 @@ public class JobInProgressActivity extends AppCompatActivity {
     private void getData(){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_JOB_DETAILS+order_id,
+                URL.URL_JOB_DETAILS+order_id+"&userid="+userid,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -250,7 +250,7 @@ public class JobInProgressActivity extends AppCompatActivity {
     private void updatestatusButton(String statusCode, String remarks, final String message){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status="+statusCode+"&remarks="+remarks+"&receiver_name=",
+                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status="+statusCode+"&remarks="+remarks+"&receiver_name=&userid="+userid,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

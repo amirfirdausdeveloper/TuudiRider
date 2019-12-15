@@ -3,7 +3,6 @@ package com.tuudi3pl.tuudirider.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +15,18 @@ import com.tuudi3pl.tuudirider.Class.OpenJobClass;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.TypeFaceClass;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
-public class OpenJobAdapter extends RecyclerView.Adapter<OpenJobAdapter.ProductViewHolder> {
+public class OpenJobDeliveryAdapter extends RecyclerView.Adapter<OpenJobDeliveryAdapter.ProductViewHolder> {
 
     String date_current;
     private Context mCtx;
     public static List<OpenJobClass> jobByMonthList;
-    private OpenJobAdapter.onClickJobByMonth mListener;
+    private OpenJobDeliveryAdapter.onClickJobByMonth mListener;
     Activity activity;
 
-    public OpenJobAdapter(Context mCtx, List<OpenJobClass> jobByMonthList, OpenJobAdapter.onClickJobByMonth mListener,
-                               Activity activity) {
+    public OpenJobDeliveryAdapter(Context mCtx, List<OpenJobClass> jobByMonthList, OpenJobDeliveryAdapter.onClickJobByMonth mListener,
+                                  Activity activity) {
         this.mCtx = mCtx;
         this.jobByMonthList = jobByMonthList;
         this.mListener = mListener;
@@ -70,7 +68,7 @@ public class OpenJobAdapter extends RecyclerView.Adapter<OpenJobAdapter.ProductV
                 next.putExtra("order_id",jobByMonthClass.getOrder_id());
                 next.putExtra("CN",jobByMonthClass.getCN());
                 next.putExtra("which",jobByMonthClass.getWhich_one());
-                next.putExtra("status","pickup");
+                next.putExtra("status","delivery");
                 mCtx.startActivity(next);
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
