@@ -51,15 +51,11 @@ public class MyJobFragment extends Fragment {
 
         tabLayout.setupWithViewPager(viewPager);
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getActivity());
-
+        setupTab(viewPager);
         return v;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setupTab(viewPager);
-    }
+
 
     private void setupTab(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());

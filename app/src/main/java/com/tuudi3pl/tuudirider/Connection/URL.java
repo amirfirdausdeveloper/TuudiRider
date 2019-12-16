@@ -32,5 +32,11 @@ public class URL {
 
     public static String URL_LISTING_MY_JOB_PICKUP = URL+"joblist_pickup.php?key=ea5a5063a6684896b99c952e87c2fd6b&userid=";
 
+    public static String URL_LISTING_MY_JOB_DELIVERY = URL+"joblist_deliver.php?key=ea5a5063a6684896b99c952e87c2fd6b&userid=";
+
     public static String URL_UPDATE_STATUS_BUTTON = URL+"updatestatus.php?key=ea5a5063a6684896b99c952e87c2fd6b&CN=";
+
+    public static String URL_COMPLETED_PICKUP_JOB = URL+"completejob_pickup.php?key=ea5a5063a6684896b99c952e87c2fd6b&userid=";
+
+    public static String URL_COMPLETED_DELIVERY_JOB = URL+"completejob_deliver.php?key=ea5a5063a6684896b99c952e87c2fd6b&userid=";
 }

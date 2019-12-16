@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class JobInProgressActivity extends AppCompatActivity {
 
-    String order_id,userid,parcel_status,CN;
+    String order_id,userid,parcel_status,CN,status;
 
     ImageView imageView_back,imageView_track;
 
@@ -73,6 +73,7 @@ public class JobInProgressActivity extends AppCompatActivity {
         userid = user.get(PreferenceManagerLogin.USERID);
 
         order_id = getIntent().getStringExtra("order_id");
+        status = getIntent().getStringExtra("status");
 
         declare();
 
@@ -247,7 +248,7 @@ public class JobInProgressActivity extends AppCompatActivity {
         Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
     }
 
-    private void updatestatusButton(String statusCode, String remarks, final String message){
+    private void updatestatusButton(final String statusCode, String remarks, final String message){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
                 URL.URL_UPDATE_STATUS_BUTTON+CN+"&status="+statusCode+"&remarks="+remarks+"&receiver_name=&userid="+userid,
@@ -261,7 +262,16 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        recreate();
+                                        if(statusCode.equals("9")){
+                                            if(status.equals("pickup")){
+                                                Intent next = new Intent(getApplicationContext(), MainDashboard.class);
+                                                next.putExtra("onclick","Open Jobs");
+                                                startActivity(next);
+                                            }
+                                        }else {
+                                            recreate();
+                                        }
+
                                     }
                                 })
                                 .show();

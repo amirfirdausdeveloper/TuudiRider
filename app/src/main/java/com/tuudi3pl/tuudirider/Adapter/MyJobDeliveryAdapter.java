@@ -10,25 +10,23 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tuudi3pl.tuudirider.Activity.Dashboard.JobAccept.JobAcceptActivity;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.JobInProgress.JobInProgressActivity;
 import com.tuudi3pl.tuudirider.Class.MyJobClass;
-import com.tuudi3pl.tuudirider.Class.OpenJobClass;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.TypeFaceClass;
 
 import java.util.List;
 
-public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewHolder> {
+public class MyJobDeliveryAdapter extends RecyclerView.Adapter<MyJobDeliveryAdapter.ProductViewHolder> {
 
     String date_current;
     private Context mCtx;
     public static List<MyJobClass> jobByMonthList;
-    private MyJobAdapter.onClickJobByMonth mListener;
+    private MyJobDeliveryAdapter.onClickJobByMonth mListener;
     Activity activity;
 
-    public MyJobAdapter(Context mCtx, List<MyJobClass> jobByMonthList, MyJobAdapter.onClickJobByMonth mListener,
-                        Activity activity) {
+    public MyJobDeliveryAdapter(Context mCtx, List<MyJobClass> jobByMonthList, MyJobDeliveryAdapter.onClickJobByMonth mListener,
+                                Activity activity) {
         this.mCtx = mCtx;
         this.jobByMonthList = jobByMonthList;
         this.mListener = mListener;
@@ -69,7 +67,6 @@ public class MyJobAdapter extends RecyclerView.Adapter<MyJobAdapter.ProductViewH
             public void onClick(View v) {
                 Intent next = new Intent(mCtx, JobInProgressActivity.class);
                 next.putExtra("order_id",jobByMonthClass.getOrder_id());
-                next.putExtra("status","pickup");
                 mCtx.startActivity(next);
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

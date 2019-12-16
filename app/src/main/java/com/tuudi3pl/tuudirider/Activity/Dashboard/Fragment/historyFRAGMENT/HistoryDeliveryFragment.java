@@ -1,4 +1,4 @@
-package com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.MyJobFRAGMENT;
+package com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.historyFRAGMENT;
 
 
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.tuudi3pl.tuudirider.Adapter.MyJobAdapter;
-import com.tuudi3pl.tuudirider.Adapter.MyJobDeliveryAdapter;
-import com.tuudi3pl.tuudirider.Class.MyJobClass;
+import com.tuudi3pl.tuudirider.Adapter.OpenJobAdapter;
+import com.tuudi3pl.tuudirider.Adapter.OpenJobDeliveryAdapter;
+import com.tuudi3pl.tuudirider.Class.OpenJobClass;
 import com.tuudi3pl.tuudirider.Connection.URL;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.PreferenceManagerLogin;
@@ -37,7 +38,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyJobDeliveryFragment extends Fragment {
+public class HistoryDeliveryFragment extends Fragment {
 
     RecyclerView recyclerView;
 
@@ -46,28 +47,30 @@ public class MyJobDeliveryFragment extends Fragment {
     StandardProgressDialog standardProgressDialog;
 
     String userid,sender_address,sender_state,sender_city,sender_postcode,sender_country,receiver_address,receiver_state,
-            receiver_city,receiver_postcode,receiver_country,parcel_status;
+            receiver_city,receiver_postcode,receiver_country;
 
-    List<MyJobClass> openJobClasses;
+    List<OpenJobClass> openJobClasses;
 
-    private MyJobDeliveryAdapter openJobAdapter;
+    private OpenJobDeliveryAdapter openJobAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_my_job_delivery, container, false);
-
+        View v = inflater.inflate(R.layout.fragment_history_delivery, container, false);
         standardProgressDialog = new StandardProgressDialog(getActivity().getWindow().getContext());
         session = new PreferenceManagerLogin(getActivity());
 
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(PreferenceManagerLogin.USERID);
 
+
         recyclerView = v.findViewById(R.id.recyclerView);
 
         return v;
     }
+
 
     @Override
     public void onResume() {
@@ -80,9 +83,9 @@ public class MyJobDeliveryFragment extends Fragment {
 
         recyclerView.setHasFixedSize(false);
         openJobClasses = new ArrayList<>();
-        openJobAdapter = new MyJobDeliveryAdapter(getContext(), openJobClasses, new MyJobDeliveryAdapter.onClickJobByMonth() {
+        openJobAdapter = new OpenJobDeliveryAdapter(getContext(), openJobClasses, new OpenJobDeliveryAdapter.onClickJobByMonth() {
             @Override
-            public void onClick(MyJobClass jobByMonthClass) {
+            public void onClick(OpenJobClass jobByMonthClass) {
 
             }
         },getActivity());
@@ -93,14 +96,12 @@ public class MyJobDeliveryFragment extends Fragment {
 
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_LISTING_MY_JOB_DELIVERY+userid,
+                URL.URL_COMPLETED_DELIVERY_JOB+userid,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
-                        if(jsonObject == null){
-
-                        }
+                        Log.d("jsonObject",jsonObject.toString());
                         standardProgressDialog.dismiss();
                         try {
                             if(jsonObject.has("listing")){
@@ -110,12 +111,6 @@ public class MyJobDeliveryFragment extends Fragment {
                                 }else {
                                     for (int i =arrLISTING.length()-1; i >=0; i--){
                                         JSONObject objectListing = arrLISTING.getJSONObject(i);
-
-                                        //GET STATUS PARCEL
-                                        if(objectListing.has("tracking_status")){
-                                            JSONObject objParcel = new JSONObject(objectListing.getString("tracking_status"));
-                                            parcel_status = objParcel.getString("status_description");
-                                        }
 
                                         //SENDER ADDRESS
                                         if(objectListing.has("sender_address")){
@@ -137,7 +132,7 @@ public class MyJobDeliveryFragment extends Fragment {
                                             receiver_country = sender.getString("country");
                                         }
 
-                                        openJobClasses.add(new MyJobClass(
+                                        openJobClasses.add(new OpenJobClass(
                                                 objectListing.getString("order_id"),
                                                 objectListing.getString("CN"),
                                                 objectListing.getString("shipping_type"),
@@ -156,12 +151,11 @@ public class MyJobDeliveryFragment extends Fragment {
                                                 receiver_city,
                                                 receiver_postcode,
                                                 receiver_country,
-                                                parcel_status,
-                                                objectListing.getString("parcel_type")
+                                                "history"
                                         ));
-                                        openJobAdapter = new MyJobDeliveryAdapter(getContext(), openJobClasses, new MyJobDeliveryAdapter.onClickJobByMonth() {
+                                        openJobAdapter = new OpenJobDeliveryAdapter(getContext(), openJobClasses, new OpenJobDeliveryAdapter.onClickJobByMonth() {
                                             @Override
-                                            public void onClick(MyJobClass jobByMonthClass) {
+                                            public void onClick(OpenJobClass jobByMonthClass) {
                                             }
                                         },getActivity());
                                         recyclerView.setAdapter(openJobAdapter);
@@ -190,5 +184,4 @@ public class MyJobDeliveryFragment extends Fragment {
         };
         Volley.newRequestQueue(getActivity()).add(jsonReq);
     }
-
 }

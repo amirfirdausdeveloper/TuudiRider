@@ -140,6 +140,7 @@ public class SignatureActivity extends AppCompatActivity {
                                         public void run() {
                                             try {
                                                 if(isConnected(getApplicationContext())){
+                                                    updatestatusButtonWithoutImage();
                                                     uploadDataWithoutPicture();
                                                 }else{
                                                     standardProgressDialog.dismiss();
@@ -213,12 +214,13 @@ public class SignatureActivity extends AppCompatActivity {
 
     private void uploadData(File f) throws IOException {
         String charset = "UTF-8";
-        String requestURL = "https://tuudi3pl.com/riderapi/signature.php";
+        String requestURL = "https://tuudi3pl.com/riderapiv2/signature.php";
         MultipartUtility multipart = new MultipartUtility(requestURL, charset);
         multipart.addFormField("key", "ea5a5063a6684896b99c952e87c2fd6b");
         multipart.addFormField("order_id", order_id);
         multipart.addFormField("recipient_name", nameET.getText().toString());
         multipart.addFormField("recipient_nric", icET.getText().toString());
+        multipart.addFormField("userid", userid);
         multipart.addFilePart("uploaded_file",f);
         String response = String.valueOf(multipart.finish()); // response from server.
         Log.d("response",response);
@@ -250,12 +252,13 @@ public class SignatureActivity extends AppCompatActivity {
 
     private void uploadDataWithoutPicture() throws IOException {
         String charset = "UTF-8";
-        String requestURL = "https://tuudi3pl.com/riderapi/signature.php";
+        String requestURL = "https://tuudi3pl.com/riderapiv2/signature.php";
         MultipartUtility multipart = new MultipartUtility(requestURL, charset);
         multipart.addFormField("key", "ea5a5063a6684896b99c952e87c2fd6b");
         multipart.addFormField("order_id", order_id);
         multipart.addFormField("recipient_name", nameET.getText().toString());
         multipart.addFormField("recipient_nric", icET.getText().toString());
+        multipart.addFormField("userid", userid);
         String response = String.valueOf(multipart.finish()); // response from server.
         Log.d("response",response);
 
@@ -367,7 +370,7 @@ public class SignatureActivity extends AppCompatActivity {
     private void updatestatusButton(final File f){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status=4&remarks=&receiver_name="+nameET.getText().toString(),
+                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status=4&remarks=&receiver_name="+nameET.getText().toString()+"&userid="+userid,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -377,6 +380,33 @@ public class SignatureActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                standardProgressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36");
+                return super.getHeaders();
+            }
+        };
+        Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
+    }
+
+    private void updatestatusButtonWithoutImage(){
+        JsonObjectRequest jsonReq = new JsonObjectRequest(
+                Request.Method.GET,
+                URL.URL_UPDATE_STATUS_BUTTON+CN+"&status=4&remarks=&receiver_name="+nameET.getText().toString()+"&userid="+userid,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+
                     }
                 }, new Response.ErrorListener() {
             @Override
