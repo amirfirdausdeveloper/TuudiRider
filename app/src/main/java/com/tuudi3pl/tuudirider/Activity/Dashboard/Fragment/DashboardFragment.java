@@ -85,7 +85,25 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        linear_openJobDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(getActivity(),MainDashboard.class);
+                next.putExtra("onclick","Open Jobs");
+                startActivity(next);
+                getActivity().overridePendingTransition(0, 0);
+            }
+        });
         linear_myJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(getActivity(),MainDashboard.class);
+                next.putExtra("onclick","My Jobs");
+                startActivity(next);
+                getActivity().overridePendingTransition(0, 0);
+            }
+        });
+        linear_myJobDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
@@ -96,6 +114,15 @@ public class DashboardFragment extends Fragment {
         });
 
         linear_completeJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(getActivity(),MainDashboard.class);
+                next.putExtra("onclick","Complete Jobs");
+                startActivity(next);
+                getActivity().overridePendingTransition(0, 0);
+            }
+        });
+        linear_completeJobDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
