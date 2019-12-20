@@ -61,7 +61,8 @@ public class sign extends AppCompatActivity {
 
     private byte[] compressSign(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Bitmap b = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+        b.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
         return stream.toByteArray();
     }

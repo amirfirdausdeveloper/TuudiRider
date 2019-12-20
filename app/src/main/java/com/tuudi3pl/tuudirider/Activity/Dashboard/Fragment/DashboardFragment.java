@@ -80,6 +80,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
                 next.putExtra("onclick","Open Jobs");
+                next.putExtra("which","");
                 startActivity(next);
                 getActivity().overridePendingTransition(0, 0);
             }
@@ -90,6 +91,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
                 next.putExtra("onclick","Open Jobs");
+                next.putExtra("which","delivery");
                 startActivity(next);
                 getActivity().overridePendingTransition(0, 0);
             }
@@ -99,6 +101,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
                 next.putExtra("onclick","My Jobs");
+                next.putExtra("which","");
                 startActivity(next);
                 getActivity().overridePendingTransition(0, 0);
             }
@@ -108,6 +111,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
                 next.putExtra("onclick","My Jobs");
+                next.putExtra("which","delivery");
                 startActivity(next);
                 getActivity().overridePendingTransition(0, 0);
             }
@@ -118,6 +122,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
                 next.putExtra("onclick","Complete Jobs");
+                next.putExtra("which","");
                 startActivity(next);
                 getActivity().overridePendingTransition(0, 0);
             }
@@ -127,6 +132,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 Intent next = new Intent(getActivity(),MainDashboard.class);
                 next.putExtra("onclick","Complete Jobs");
+                next.putExtra("which","delivery");
                 startActivity(next);
                 getActivity().overridePendingTransition(0, 0);
             }

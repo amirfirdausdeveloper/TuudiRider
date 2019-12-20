@@ -87,6 +87,9 @@ public class OpenJobFragment extends Fragment {
         adapter.addFragment(new OpenJobDeliveryFragment(), "DELIVERY");
         viewPager.setAdapter(adapter);
 
+        if(MainDashboard.which.equals("delivery")){
+            viewPager.setCurrentItem(2);
+        }
     }
 
 

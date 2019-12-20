@@ -91,6 +91,10 @@ public class HistoryFragment extends Fragment {
         adapter.addFragment(new HistoryPickupFragment(), "PICKUP");
         adapter.addFragment(new HistoryDeliveryFragment(), "DELIVERY");
         viewPager.setAdapter(adapter);
+
+        if(MainDashboard.which.equals("delivery")){
+            viewPager.setCurrentItem(2);
+        }
     }
 
 

@@ -35,6 +35,7 @@ public class MainDashboard extends AppCompatActivity {
 
     PreferenceManagerLogin session;
 
+    public static String which = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +56,13 @@ public class MainDashboard extends AppCompatActivity {
             if(getIntent().hasExtra("onclick")){
                 if(getIntent().getStringExtra("onclick").equals("Open Jobs")){
                     navigation.setSelectedItemId(R.id.openJob);
+                    which = getIntent().getStringExtra("which");
                 }else if(getIntent().getStringExtra("onclick").equals("My Jobs")){
                     navigation.setSelectedItemId(R.id.myJob);
+                    which = getIntent().getStringExtra("which");
                 }else if(getIntent().getStringExtra("onclick").equals("Complete Jobs")){
                     navigation.setSelectedItemId(R.id.history);
+                    which = getIntent().getStringExtra("which");
                 }
             }else{
                 Fragment fragment = new DashboardFragment();
@@ -136,22 +140,27 @@ public class MainDashboard extends AppCompatActivity {
                 case R.id.dashboard:
                     fragment = new DashboardFragment();
                     loadFragment(fragment);
+                    which = "";
                     return true;
                 case R.id.myJob:
                     fragment = new MyJobFragment();
                     loadFragment(fragment);
+                    which = "";
                     return true;
                 case R.id.openJob:
                     fragment = new OpenJobFragment();
                     loadFragment(fragment);
+                    which = "";
                     return true;
                 case R.id.history:
                     fragment = new HistoryFragment();
                     loadFragment(fragment);
+                    which = "";
                     return true;
                 case R.id.setting:
                     fragment = new SettingFragment();
                     loadFragment(fragment);
+                    which = "";
                     return true;
             }
             return false;

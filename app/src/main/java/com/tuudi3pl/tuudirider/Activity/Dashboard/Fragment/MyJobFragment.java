@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.MyJobFRAGMENT.MyJobDeliveryFragment;
 import com.tuudi3pl.tuudirider.Activity.Dashboard.Fragment.MyJobFRAGMENT.MyJobPickupFragment;
+import com.tuudi3pl.tuudirider.Activity.Dashboard.MainDashboard;
 import com.tuudi3pl.tuudirider.R;
 import com.tuudi3pl.tuudirider.Utils.TypeFaceClass;
 
@@ -62,6 +63,10 @@ public class MyJobFragment extends Fragment {
         adapter.addFragment(new MyJobPickupFragment(), "PICKUP");
         adapter.addFragment(new MyJobDeliveryFragment(), "DELIVERY");
         viewPager.setAdapter(adapter);
+
+        if(MainDashboard.which.equals("delivery")){
+            viewPager.setCurrentItem(2);
+        }
     }
 
 
