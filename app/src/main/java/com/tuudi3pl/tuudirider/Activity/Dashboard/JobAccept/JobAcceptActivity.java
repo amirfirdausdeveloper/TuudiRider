@@ -337,7 +337,7 @@ public class JobAcceptActivity extends AppCompatActivity {
                     public void onResponse(JSONObject jsonObject) {
                         standardProgressDialog.dismiss();
                         Intent next = new Intent(getApplicationContext(), MainDashboard.class);
-                        next.putExtra("onclick","My Jobs");
+//                        next.putExtra("onclick","My Jobs");
                         startActivity(next);
                     }
                 }, new Response.ErrorListener() {

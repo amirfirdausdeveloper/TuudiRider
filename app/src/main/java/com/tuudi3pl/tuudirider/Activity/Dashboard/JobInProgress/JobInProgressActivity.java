@@ -3,6 +3,7 @@ package com.tuudi3pl.tuudirider.Activity.Dashboard.JobInProgress;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -262,10 +263,10 @@ public class JobInProgressActivity extends AppCompatActivity {
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if(statusCode.equals("9")){
+                                        if(statusCode.equals("9") || statusCode.equals("55")){
                                             if(status.equals("pickup")){
                                                 Intent next = new Intent(getApplicationContext(), MainDashboard.class);
-                                                next.putExtra("onclick","Open Jobs");
+//                                                next.putExtra("onclick","Open Jobs");
                                                 startActivity(next);
                                             }
                                         }else {
@@ -336,7 +337,29 @@ public class JobInProgressActivity extends AppCompatActivity {
                                         if(statusCode.equals("10")  || parcel_status.equals("13")){
                                             updatestatusButton("8","",button_accept.getText().toString());
                                         }else if(parcel_status.equals("8")){
-                                            updatestatusButton("9","",button_accept.getText().toString());
+
+                                            final Dialog dialog = new Dialog(JobInProgressActivity.this);
+                                            dialog.setContentView(R.layout.custom_dialog_layout);
+
+                                            Button button_one = (Button) dialog.findViewById(R.id.button_one);
+                                            Button button_two = (Button) dialog.findViewById(R.id.button_two);
+
+                                            button_one.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    updatestatusButton("55","","Order Collected & Sending to Delivery Hub");
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                            button_two.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    updatestatusButton("9","","Order Collected only");
+                                                    dialog.dismiss();
+                                                }
+                                            });
+
+                                            dialog.show();
                                         }else if(parcel_status.equals("9")  || parcel_status.equals("3")){
                                             updatestatusButton("12","",button_accept.getText().toString());
                                         }else if(parcel_status.equals("12")){
