@@ -43,7 +43,7 @@ public class DashboardFragment extends Fragment {
             textView_valueMyJob,textView_myJob,textView_valueCompleteJob,textView_completeJob
             ,textView_valueOpenJobDelivery,textView_openjobDelivery
             ,textView_valueMyJobDelivery,textView_myJobDelivery,
-            textView_valueCompleteJobDelivery,textView_completeJobDelivery;
+            textView_valueCompleteJobDelivery,textView_completeJobDelivery,textView_commision;
 
     PreferenceManagerLogin session;
 
@@ -142,6 +142,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void declare(View v){
+        textView_commision = v.findViewById(R.id.textView_commision);
         textView_title = v.findViewById(R.id.textView_title);
         textView_email = v.findViewById(R.id.textView_email);
         textView_name = v.findViewById(R.id.textView_name);
@@ -169,7 +170,7 @@ public class DashboardFragment extends Fragment {
 
         TypeFaceClass.setTypeFaceTextViewBOLD(textView_title,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_email,getActivity());
-        TypeFaceClass.setTypeFaceTextView(textView_email,getActivity());
+        TypeFaceClass.setTypeFaceTextView(textView_commision,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_valueOpenJob,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_openjob,getActivity());
         TypeFaceClass.setTypeFaceTextView(textView_valueMyJob,getActivity());
@@ -200,11 +201,18 @@ public class DashboardFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
+                        Log.d("JSON",jsonObject.toString());
                         try {
                             if(jsonObject.has("profile")){
                                 JSONObject profileOBJ = new JSONObject(jsonObject.getString("profile"));
                                 textView_name.setText(profileOBJ.getString("first_name")+" "+profileOBJ.getString("last_name"));
                                 textView_email.setText(profileOBJ.getString("email"));
+
+                                if(profileOBJ.getString("commission").equals("null")){
+                                    textView_commision.setText("Commission : Rm 0.00");
+                                }else {
+                                    textView_commision.setText("Commission : "+profileOBJ.getString("commission"));
+                                }
                                 getCountJob();
                             }
                         } catch (JSONException e) {

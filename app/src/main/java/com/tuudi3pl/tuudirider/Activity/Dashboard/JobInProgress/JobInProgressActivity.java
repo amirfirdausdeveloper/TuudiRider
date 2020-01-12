@@ -297,7 +297,7 @@ public class JobInProgressActivity extends AppCompatActivity {
     private void getStatusButton(final String statusCode){
         JsonObjectRequest jsonReq = new JsonObjectRequest(
                 Request.Method.GET,
-                "https://tuudi3pl.com/riderapi/statuslist.php?key=ea5a5063a6684896b99c952e87c2fd6b",
+                "https://tuudi3pl.com/riderapiv2/statuslist.php?key=ea5a5063a6684896b99c952e87c2fd6b",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -312,7 +312,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                         button_accept2.setVisibility(View.GONE);
                                     }
                                 }else if(parcel_status.equals("8")){
-                                    if(obj.getString("id").equals("9")){
+                                    if(obj.getString("id").equals("55")){ //tukar 55 nti
                                         button_accept.setText(obj.getString("label_display"));
                                     }
                                     button_accept2.setText("Pending Collection");
@@ -338,28 +338,29 @@ public class JobInProgressActivity extends AppCompatActivity {
                                             updatestatusButton("8","",button_accept.getText().toString());
                                         }else if(parcel_status.equals("8")){
 
-                                            final Dialog dialog = new Dialog(JobInProgressActivity.this);
-                                            dialog.setContentView(R.layout.custom_dialog_layout);
-
-                                            Button button_one = (Button) dialog.findViewById(R.id.button_one);
-                                            Button button_two = (Button) dialog.findViewById(R.id.button_two);
-
-                                            button_one.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    updatestatusButton("55","","Order Collected & Sending to Delivery Hub");
-                                                    dialog.dismiss();
-                                                }
-                                            });
-                                            button_two.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    updatestatusButton("9","","Order Collected only");
-                                                    dialog.dismiss();
-                                                }
-                                            });
-
-                                            dialog.show();
+                                            updatestatusButton("55","",button_accept.getText().toString());
+//                                            final Dialog dialog = new Dialog(JobInProgressActivity.this);
+//                                            dialog.setContentView(R.layout.custom_dialog_layout);
+//
+//                                            Button button_one = (Button) dialog.findViewById(R.id.button_one);
+//                                            Button button_two = (Button) dialog.findViewById(R.id.button_two);
+//
+//                                            button_one.setOnClickListener(new View.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//                                                    updatestatusButton("55","","Order Collected & Sending to Delivery Hub");
+//                                                    dialog.dismiss();
+//                                                }
+//                                            });
+//                                            button_two.setOnClickListener(new View.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//                                                    updatestatusButton("9","","Order Collected only");
+//                                                    dialog.dismiss();
+//                                                }
+//                                            });
+//
+//                                            dialog.show();
                                         }else if(parcel_status.equals("9")  || parcel_status.equals("3")){
                                             updatestatusButton("12","",button_accept.getText().toString());
                                         }else if(parcel_status.equals("12")){
