@@ -130,7 +130,7 @@ public class JobAcceptActivity extends AppCompatActivity {
             imageView_track.setVisibility(View.VISIBLE);
         }else{
             button_accept.setVisibility(View.VISIBLE);
-            imageView_track.setVisibility(View.GONE);
+            imageView_track.setVisibility(View.VISIBLE);
         }
     }
 
@@ -308,7 +308,7 @@ public class JobAcceptActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
-                        updatestatusButton("3","","");
+                        updatestatusButton("15","","");
                     }
                 }, new Response.ErrorListener() {
             @Override

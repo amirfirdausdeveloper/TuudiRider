@@ -317,7 +317,7 @@ public class JobInProgressActivity extends AppCompatActivity {
                                     }
                                     button_accept2.setText("Pending Collection");
 
-                                }else if(parcel_status.equals("9") || parcel_status.equals("3")){
+                                }else if(parcel_status.equals("9") || parcel_status.equals("3")|| parcel_status.equals("15")){
                                     if(obj.getString("id").equals("12")){
                                         button_accept.setText(obj.getString("label_display"));
                                         button_accept2.setVisibility(View.GONE);
