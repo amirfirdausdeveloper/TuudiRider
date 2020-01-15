@@ -361,7 +361,7 @@ public class JobInProgressActivity extends AppCompatActivity {
 //                                            });
 //
 //                                            dialog.show();
-                                        }else if(parcel_status.equals("9")  || parcel_status.equals("3")){
+                                        }else if(parcel_status.equals("9")  || parcel_status.equals("3") || parcel_status.equals("15")){
                                             updatestatusButton("12","",button_accept.getText().toString());
                                         }else if(parcel_status.equals("12")){
                                             Intent next = new Intent(getApplicationContext(), SignatureActivity.class);
