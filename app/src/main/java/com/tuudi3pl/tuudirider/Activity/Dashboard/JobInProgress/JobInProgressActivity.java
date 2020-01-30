@@ -4,6 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -54,6 +57,8 @@ public class JobInProgressActivity extends AppCompatActivity {
     PreferenceManagerLogin session;
 
     StandardProgressDialog standardProgressDialog;
+
+    ImageView imageView_copy_delivery,imageView_copy_pickup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +102,31 @@ public class JobInProgressActivity extends AppCompatActivity {
             }
         });
 
+        //COPY ADDRESS
+        imageView_copy_pickup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setText(textView_pickup_address.getText());
+                Toast.makeText(getApplicationContext(), "Address copied", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imageView_copy_delivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setText(textView_delivery_address.getText());
+                Toast.makeText(getApplicationContext(), "Address copied", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
 
     private void declare() {
+        imageView_copy_delivery = findViewById(R.id.imageView_copy_delivery);
+        imageView_copy_pickup = findViewById(R.id.imageView_copy_pickup);
         imageView_back = findViewById(R.id.imageView_back);
         textView_title = findViewById(R.id.textView_title);
         textView_order_id = findViewById(R.id.textView_order_id);

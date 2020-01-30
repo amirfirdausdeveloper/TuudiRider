@@ -231,8 +231,17 @@ public class SignatureActivity extends AppCompatActivity {
                 standardProgressDialog.dismiss();
                 JSONObject obj = arr.getJSONObject(i);
                 if(obj.getString("code").equals("0000")){
-                    Intent next = new Intent(getApplicationContext(), MainDashboard.class);
-                    startActivity(next);
+                    new AlertDialog.Builder(SignatureActivity.this)
+                            .setCancelable(false)
+                            .setMessage(obj.getString("message"))
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent next = new Intent(getApplicationContext(), MainDashboard.class);
+                                    startActivity(next);
+                                }
+                            })
+                            .show();
                 }else{
                     new AlertDialog.Builder(SignatureActivity.this)
                             .setCancelable(false)
@@ -268,8 +277,18 @@ public class SignatureActivity extends AppCompatActivity {
                 standardProgressDialog.dismiss();
                 JSONObject obj = arr.getJSONObject(i);
                 if(obj.getString("code").equals("0000")){
-                    Intent next = new Intent(getApplicationContext(), MainDashboard.class);
-                    startActivity(next);
+                    new AlertDialog.Builder(SignatureActivity.this)
+                            .setCancelable(false)
+                            .setMessage(obj.getString("message"))
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent next = new Intent(getApplicationContext(), MainDashboard.class);
+                                    startActivity(next);
+                                }
+                            })
+                            .show();
+
                 }else{
                     new AlertDialog.Builder(SignatureActivity.this)
                             .setCancelable(false)

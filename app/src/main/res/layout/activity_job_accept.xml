@@ -218,12 +218,26 @@
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/textView_pickup_address"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:textColor="@color/colorBlack" />
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_marginRight="10dp"
+                                    android:id="@+id/textView_pickup_address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/colorBlack" />
+
+                                <ImageView
+                                    android:id="@+id/imageView_copy_pickup"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    app:srcCompat="@drawable/icon_copy" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/textView_pickup_email"
@@ -276,12 +290,26 @@
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/textView_delivery_address"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:textColor="@color/colorBlack" />
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_marginRight="10dp"
+                                    android:id="@+id/textView_delivery_address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/colorBlack" />
+
+                                <ImageView
+                                    android:id="@+id/imageView_copy_delivery"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    app:srcCompat="@drawable/icon_copy" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/textView_delivery_email"
