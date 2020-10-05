@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         standardProgressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),"Decline Job Error",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Login error",Toast.LENGTH_LONG).show();
                     }
                 }) {
 
