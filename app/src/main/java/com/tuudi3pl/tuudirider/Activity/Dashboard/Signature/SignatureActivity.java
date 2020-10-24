@@ -2,18 +2,25 @@ package com.tuudi3pl.tuudirider.Activity.Dashboard.Signature;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +49,7 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,13 +62,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class SignatureActivity extends AppCompatActivity {
 
     private static final int SIGNATURE_REQUEST_CODE = 11;
 
+    private static final int CAMERA_REQUEST_CODE = 10;
+
+    private static final int GALLERY_REQUEST_CODE = 12;
+
+    private static final String IMAGE_DIRECTORY = "/TuudiRider";
+
+    private String camera_image_file ="";
+
     private Bitmap mSignatureImg;
 
-    ImageView iv_sign;
+    ImageView iv_sign,iv_image;
 
     TextView textView_title;
 
@@ -80,9 +99,14 @@ public class SignatureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signature);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        ActivityCompat.requestPermissions(SignatureActivity.this,
+                new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                1);
 
         standardProgressDialog = new StandardProgressDialog(this.getWindow().getContext());
         session = new PreferenceManagerLogin(getApplicationContext());
@@ -98,6 +122,7 @@ public class SignatureActivity extends AppCompatActivity {
         nameET = findViewById(R.id.nameET);
         icET = findViewById(R.id.icET);
         iv_sign = findViewById(R.id.iv_sign);
+        iv_image = findViewById(R.id.iv_image);
         imageView_back = findViewById(R.id.imageView_back);
         button_submit = findViewById(R.id.button_submit);
 
@@ -112,6 +137,14 @@ public class SignatureActivity extends AppCompatActivity {
             }
         });
 
+        iv_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPictureDialog();
+            }
+        });
+
+
         imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +157,7 @@ public class SignatureActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(nameET.getText().toString().equals("") || icET.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"Please fill in the value",Toast.LENGTH_LONG).show();
-                }else if(mSignatureImg == null){
+                }else if(mSignatureImg == null && camera_image_file.equals("")){
 
                     new AlertDialog.Builder(SignatureActivity.this)
                             .setCancelable(false)
@@ -175,7 +208,13 @@ public class SignatureActivity extends AppCompatActivity {
                                         public void run() {
                                             try {
                                                 if(isConnected(getApplicationContext())){
-                                                    savebitmap(mSignatureImg);
+                                                    if(mSignatureImg == null){
+                                                        File fs = null;
+                                                        updatestatusButton(fs);
+                                                    }else{
+                                                        savebitmap(mSignatureImg);
+                                                    }
+
                                                 }else{
                                                     standardProgressDialog.dismiss();
                                                     Toast.makeText(getApplicationContext(),"Please try again",Toast.LENGTH_LONG).show();
@@ -214,14 +253,21 @@ public class SignatureActivity extends AppCompatActivity {
 
     private void uploadData(File f) throws IOException {
         String charset = "UTF-8";
-        String requestURL = "https://tuudi3pl.com/riderapiv2/signature.php";
+        String requestURL = "https://tuudi3pl.com/riderapiv2/signaturev2.php";
         MultipartUtility multipart = new MultipartUtility(requestURL, charset);
         multipart.addFormField("key", "ea5a5063a6684896b99c952e87c2fd6b");
         multipart.addFormField("order_id", order_id);
         multipart.addFormField("recipient_name", nameET.getText().toString());
         multipart.addFormField("recipient_nric", icET.getText().toString());
         multipart.addFormField("userid", userid);
-        multipart.addFilePart("uploaded_file",f);
+        if(f != null){
+            multipart.addFilePart("uploaded_file",f);
+        }
+
+        if(!camera_image_file.equals("")){
+            File imageFile = new File(camera_image_file);
+            multipart.addFilePart("uploaded_pic",imageFile);
+        }
         String response = String.valueOf(multipart.finish()); // response from server.
         Log.d("response",response);
 
@@ -382,7 +428,33 @@ public class SignatureActivity extends AppCompatActivity {
                         iv_sign.setImageBitmap(mSignatureImg);
                     }
                     break;
+
+                case CAMERA_REQUEST_CODE:
+                    Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                    iv_image.setImageBitmap(thumbnail);
+                    camera_image_file = saveImage(thumbnail);
+                    break;
+
+
+                case GALLERY_REQUEST_CODE:
+                    if (data != null) {
+                        Uri contentURI = data.getData();
+                        try {
+                            Log.d("contentURI", String.valueOf(contentURI));
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                            iv_image.setImageBitmap(bitmap);
+                            camera_image_file = saveImage(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+
+                    break;
             }
+        }else{
+            camera_image_file = "";
+            iv_image.setBackgroundColor(Color.parseColor("#aaa"));
         }
     }
 
@@ -442,5 +514,72 @@ public class SignatureActivity extends AppCompatActivity {
             }
         };
         Volley.newRequestQueue(getApplicationContext()).add(jsonReq);
+    }
+
+    private void showPictureDialog() {
+        androidx.appcompat.app.AlertDialog.Builder pictureDialog = new androidx.appcompat.app.AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera"};
+        pictureDialog.setItems(pictureDialogItems,
+                new android.content.DialogInterface.OnClickListener() {
+                    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallery();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    public void choosePhotoFromGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+    }
+
+    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.M)
+    private void takePhotoFromCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
+
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+        Log.d("wallpaperDirectory",wallpaperDirectory.toString());
+        try {
+            Log.d("wallpaperDirectory", String.valueOf(wallpaperDirectory.createNewFile()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance()
+                    .getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return f.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
     }
 }
